@@ -1,0 +1,73 @@
+#
+# Kernel configuration
+#
+
+menu "Kernel options"
+
+choice
+	prompt "RTOS kernel"
+	default RTOS_RTTHREAD
+	help
+		Select RTOS kernel to used
+
+	config RTOS_FREERTOS
+		bool "FreeRTOS used"
+		select OS_FREERTOS
+
+	config RTOS_RTTHREAD
+		bool "RT-Thread used"
+		select OS_RTTHREAD
+endchoice
+
+config OS_RTTHREAD
+	bool
+	default n
+	help
+		RT-Thread used.
+
+# os
+config OS_FREERTOS
+	bool
+	default n
+	help
+		FreeRTOS used.
+
+source "src/kernel/RT-Thread/Kconfig"
+
+if OS_FREERTOS
+
+# os version
+choice
+	prompt "FreeRTOS version"
+	default FREERTOS_VER_NULL
+	help
+		Select FreeRTOS version.
+
+config FREERTOS_VER_10_2_1
+	bool "FreeRTOS v10.2.1"
+	help
+		FreeRTOS v10.2.1.
+
+config FREERTOS_VER_NULL
+	bool "FreeRTOS NULL"
+	help
+		FreeRTOS NULL.
+endchoice
+
+config OS_FREERTOS_VERSION_STR
+	string
+	default "v10.2.1" if FREERTOS_VER_10_2_1
+	help
+	  FreeRTOS version Selsected
+
+
+# Use os idle hook
+config OS_USE_IDLE_HOOK
+	bool "FreeRTOS idle hook"
+	default n
+	depends on ROM_FREERTOS
+	help
+	  Use freeRTOS idle hook
+endif
+
+endmenu
