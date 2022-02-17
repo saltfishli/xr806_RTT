@@ -35,8 +35,6 @@
 #include "debug/swdbug.h"
 #include <stdlib.h>
 
-static OS_Timer_t test_timer;
-
 int main(void)
 {
 #if 1
